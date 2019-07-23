@@ -1,0 +1,55 @@
+.App {
+    text-transform: uppercase;
+    font-family: 'Roboto Mono', monospace;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.container {
+    margin: 15px auto;
+	border: 2px solid white;
+	padding: 20px;
+	display: grid;
+	grid-template-columns: 2fr;
+	grid-template-areas: 
+    "NameFilm NameFilm NameFilm" 
+    "content content content"
+	"nfilms nfilms nfilms"
+    ;
+}
+
+h1 {
+    text-align: center;
+    grid-area: NameFilm;
+}
+
+h1::after {
+    content: " ";
+	display: block;
+	height: 2px;
+	background: white;
+}
+
+.content {
+    grid-area: content;
+    display: grid;
+    margin: 0 auto;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+p {
+    text-align: center;
+}
+
+button {
+    background: transparent;
+	color: white;
+	border: 2px solid white;
+	padding: 10px;
+    margin: 10px auto;
+}
+
+button::hover, button::focus {
+    background: #4c4c4c;
+}
