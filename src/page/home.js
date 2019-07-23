@@ -41,12 +41,16 @@ class App extends Component {
                 films: response.data.title
             });
         });
-        
-        this.setState({films: this.films});
 
-        this.state.films.forEach(e => {
-            console.log(e);
-        });
+
+       
+        
+        await 
+
+        setTimeout(() => {
+            this.setState({films: this.films});
+        }, 2000);
+        
     }
 
     async handleReload() {
