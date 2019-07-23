@@ -10,6 +10,9 @@ class App extends Component {
         films: []
     }
 
+    numFilm = [];
+    films = [];
+
     async componentDidMount() {
         const response = await api.get(`planets/1/`);
         this.setState({ planet: response.data });
@@ -18,29 +21,39 @@ class App extends Component {
             this.state.planet.films.forEach(e => {
                 const film = e;
                 const numFilm = film.charAt(film.length - 2);
-                this.getFilms(numFilm);
+                this.numFilm.push({
+                    numFilms: numFilm
+                });
+               
             });
+            this.getFilms(this.numFilm);
+            
         }
 
         
     }
 
     async getFilms(numFilm) {
-        const response = await api.get(`films/${numFilm}/`);
-        const arr = [];
-        arr.push({
-            films: response.data.title
-        })
+        
+        await numFilm.forEach( async (e) =>  {
+            const response = await api.get(`films/${e.numFilms}/`);
+            this.films.push({
+                films: response.data.title
+            });
+        });
+        
+        this.setState({films: this.films});
 
-        // console.log(arr)
-        this.setState({ films: arr });
-        console.log(this.state.films)
+        this.state.films.forEach(e => {
+            console.log(e);
+        });
     }
 
     async handleReload() {
         this.state.planet = [];
         const response = await api.get(`planets/3/`);
         this.setState({ planet: response.data });
+        
     }
 
     render() {
@@ -62,7 +75,7 @@ class App extends Component {
                     
                     {this.state.films.map(filmsName => (
                         <p key={filmsName.films}>
-                           {filmsName.films} 
+                           {filmsName.films}
                         </p>
                     ))}
                     
