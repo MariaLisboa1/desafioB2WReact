@@ -15,6 +15,7 @@ class App extends Component {
     films = [];
     btn
     span
+    response = [];
 
     async componentDidMount() {
         this.getPlanet();
@@ -31,6 +32,7 @@ class App extends Component {
             await this.setState({ planet: response.data });
 
             if (this.state.planet.films[0]) {
+                this.numFilm = [];
                 await this.setState({ notFilm: "" });
 
                 this.state.planet.films.forEach(e => {
@@ -40,6 +42,7 @@ class App extends Component {
                         numFilms: numFilm
                     });
                 });
+                
                 this.getFilms(this.numFilm);
             } else {
                 this.setState({ notFilm: " No film." });
@@ -57,24 +60,25 @@ class App extends Component {
     async getFilms(numFilm) {
 
         try {
-            await this.setState({ films: [] });
-
+            
+            this.response = [];
             await numFilm.forEach(async (e) => {
-                const response = await api.get(`films/${e.numFilms}/`);
-                setTimeout(() => {
-                    for (var i = 0; i < this.films.length; i++) {
-                        delete this.films[i];
-                        delete this.state.films[i]
-                    }
-                }, 1000);
+            
+                let response = await api.get(`films/${e.numFilms}/`);
+                
+                await this.response.push({
+                    title: response.data.title,
+                    created: response.data.created
+                })                
 
-                setTimeout(() => {
-                    this.films.push({
-                        films: response.data
-                    });
-                    this.setState({ films: this.films });
-                }, 2000);
             });
+
+            setTimeout(() => {
+                this.setState({
+                    films: this.response
+                 });
+            }, 2000);
+             
             this.getBtn.classList.add("btn");
             this.getBtn.classList.remove("is-loading");
         } catch (error) {
@@ -132,9 +136,8 @@ class App extends Component {
                         FEATURED IN:
                         {this.state.notFilm}
                         {this.state.films.map(filmsName => (
-                            // <p key={this.state.films[0].films.created}>
-                            <p key={filmsName.films.created}>
-                                {filmsName.films.title}
+                            <p key={filmsName.created}>
+                                {filmsName.title}
                             </p>
                         ))}
                     </div>
