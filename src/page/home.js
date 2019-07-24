@@ -99,8 +99,7 @@ class App extends Component {
         const maxValue = 61;
 
         if (drawn.length === maxValue) {
-            if (alert('No more planets :(')) drawn = [];
-            else return;
+            alert('No more planets :(');
         }
         let suggestion = Math.ceil(Math.random() * maxValue);
         while (drawn.indexOf(suggestion) >= 0) {
